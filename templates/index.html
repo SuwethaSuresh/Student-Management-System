@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Student Management System</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+<body>
+
+    <h1>Student Management System</h1>
+
+
+    <!-- Dashboard -->
+
+    <div class="dashboard">
+
+        <div class="card">
+            <h3>Total Students</h3>
+            <p id="totalStudents">0</p>
+        </div>
+
+        <div class="card">
+            <h3>ECE Students</h3>
+            <p id="eceStudents">0</p>
+        </div>
+
+        <div class="card">
+            <h3>CSE Students</h3>
+            <p id="cseStudents">0</p>
+        </div>
+
+        <div class="card">
+            <h3>IT Students</h3>
+            <p id="itStudents">0</p>
+        </div>
+
+    </div>
+
+
+    <!-- Add / Edit Student -->
+
+    <div class="form-container">
+
+        <h2 id="formTitle">Add Student</h2>
+
+        <form id="studentForm">
+
+            <label>Student ID:</label>
+
+            <input type="text"
+                   id="studentId"
+                   placeholder="Example: ST101"
+                   required>
+
+
+            <label>Name:</label>
+
+            <input type="text"
+                   id="name"
+                   placeholder="Enter student name"
+                   required>
+
+
+            <label>Email:</label>
+
+            <input type="email"
+                   id="email"
+                   placeholder="Enter email"
+                   required>
+
+
+            <label>Department:</label>
+
+            <select id="department" required>
+
+                <option value="">Select Department</option>
+
+                <option value="ECE">ECE</option>
+
+                <option value="CSE">CSE</option>
+
+                <option value="IT">IT</option>
+
+                <option value="EEE">EEE</option>
+
+                <option value="MECH">MECH</option>
+
+            </select>
+
+
+            <label>Year:</label>
+
+            <select id="year" required>
+
+                <option value="">Select Year</option>
+
+                <option value="1">1st Year</option>
+
+                <option value="2">2nd Year</option>
+
+                <option value="3">3rd Year</option>
+
+                <option value="4">4th Year</option>
+
+            </select>
+
+
+            <button type="submit" id="submitButton">
+                Add Student
+            </button>
+
+
+            <button type="button"
+                    id="cancelButton"
+                    class="cancel-button"
+                    onclick="cancelEdit()">
+
+                Cancel
+
+            </button>
+
+        </form>
+
+    </div>
+
+
+    <!-- Student List -->
+
+    <div class="student-section">
+
+        <h2>Student List</h2>
+
+
+        <!-- Search -->
+
+        <div class="search-container">
+
+            <input type="text"
+                   id="searchInput"
+                   placeholder="Search by name or student ID"
+                   onkeyup="displayStudents()">
+
+
+            <select id="filterDepartment"
+                    onchange="displayStudents()">
+
+                <option value="">All Departments</option>
+
+                <option value="ECE">ECE</option>
+
+                <option value="CSE">CSE</option>
+
+                <option value="IT">IT</option>
+
+                <option value="EEE">EEE</option>
+
+                <option value="MECH">MECH</option>
+
+            </select>
+
+        </div>
+
+
+        <!-- Table -->
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>Student ID</th>
+
+                    <th>Name</th>
+
+                    <th>Email</th>
+
+                    <th>Department</th>
+
+                    <th>Year</th>
+
+                    <th>Actions</th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody id="studentTableBody">
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+
+</body>
+
+</html>
