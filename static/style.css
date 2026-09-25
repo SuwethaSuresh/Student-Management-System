@@ -81,6 +81,25 @@ h2 {
 }
 
 
+/* Message */
+
+#message {
+
+    width: 400px;
+
+    margin: 10px auto;
+
+    padding: 10px;
+
+    text-align: center;
+
+    border-radius: 5px;
+
+    display: none;
+
+}
+
+
 /* Form */
 
 .form-container {

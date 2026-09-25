@@ -8,7 +8,44 @@ let editingStudentId = null;
 loadStudents();
 
 
-// Get students from Python
+// Show message
+
+function showMessage(message, type) {
+
+    let messageBox = document.getElementById("message");
+
+    messageBox.innerText = message;
+
+    messageBox.style.display = "block";
+
+
+    if (type === "success") {
+
+        messageBox.style.backgroundColor = "#d4edda";
+
+        messageBox.style.color = "#155724";
+
+    }
+
+    else {
+
+        messageBox.style.backgroundColor = "#f8d7da";
+
+        messageBox.style.color = "#721c24";
+
+    }
+
+
+    setTimeout(function() {
+
+        messageBox.style.display = "none";
+
+    }, 3000);
+
+}
+
+
+// Load students from Python
 
 function loadStudents() {
 
@@ -28,6 +65,12 @@ function loadStudents() {
 
             updateDashboard();
 
+        })
+
+        .catch(function(error) {
+
+            showMessage("Could not load students.", "error");
+
         });
 
 }
@@ -43,19 +86,66 @@ document.getElementById("studentForm").addEventListener(
 
 
         let studentId =
-            document.getElementById("studentId").value;
+            document.getElementById("studentId").value.trim();
 
         let name =
-            document.getElementById("name").value;
+            document.getElementById("name").value.trim();
 
         let email =
-            document.getElementById("email").value;
+            document.getElementById("email").value.trim();
 
         let department =
             document.getElementById("department").value;
 
         let year =
             document.getElementById("year").value;
+
+
+        // Frontend validation
+
+        if (studentId === "") {
+
+            showMessage("Student ID is required.", "error");
+
+            return;
+
+        }
+
+
+        if (name === "") {
+
+            showMessage("Name is required.", "error");
+
+            return;
+
+        }
+
+
+        if (email === "") {
+
+            showMessage("Email is required.", "error");
+
+            return;
+
+        }
+
+
+        if (department === "") {
+
+            showMessage("Please select a department.", "error");
+
+            return;
+
+        }
+
+
+        if (year === "") {
+
+            showMessage("Please select a year.", "error");
+
+            return;
+
+        }
 
 
         let studentData = {
@@ -73,15 +163,11 @@ document.getElementById("studentForm").addEventListener(
         };
 
 
-        // If editing
-
         if (editingStudentId !== null) {
 
             updateStudent(studentData);
 
         }
-
-        // If adding
 
         else {
 
@@ -119,15 +205,27 @@ function addStudent(studentData) {
 
     .then(function(data) {
 
-        alert(data.message);
+        if (data.message === "Student added successfully.") {
 
-        if (data.message === "Student added successfully") {
+            showMessage(data.message, "success");
 
             document.getElementById("studentForm").reset();
 
             loadStudents();
 
         }
+
+        else {
+
+            showMessage(data.message, "error");
+
+        }
+
+    })
+
+    .catch(function(error) {
+
+        showMessage("Something went wrong.", "error");
 
     });
 
@@ -160,7 +258,6 @@ function displayStudents() {
         let name =
             student.name.toLowerCase();
 
-
         let studentId =
             student.student_id.toLowerCase();
 
@@ -180,47 +277,71 @@ function displayStudents() {
             let row = document.createElement("tr");
 
 
-            row.innerHTML = `
+            addCell(row, student.student_id);
 
-                <td>${student.student_id}</td>
+            addCell(row, student.name);
 
-                <td>${student.name}</td>
+            addCell(row, student.email);
 
-                <td>${student.email}</td>
+            addCell(row, student.department);
 
-                <td>${student.department}</td>
-
-                <td>${student.year}</td>
-
-                <td>
-
-                    <button
-                        class="edit-button"
-                        onclick="editStudent('${student.student_id}')">
-
-                        Edit
-
-                    </button>
+            addCell(row, student.year);
 
 
-                    <button
-                        class="delete-button"
-                        onclick="deleteStudent('${student.student_id}')">
+            let actionCell = document.createElement("td");
 
-                        Delete
 
-                    </button>
+            let editButton = document.createElement("button");
 
-                </td>
+            editButton.innerText = "Edit";
 
-            `;
+            editButton.className = "edit-button";
 
+            editButton.onclick = function() {
+
+                editStudent(student.student_id);
+
+            };
+
+
+            let deleteButton = document.createElement("button");
+
+            deleteButton.innerText = "Delete";
+
+            deleteButton.className = "delete-button";
+
+            deleteButton.onclick = function() {
+
+                deleteStudent(student.student_id);
+
+            };
+
+
+            actionCell.appendChild(editButton);
+
+            actionCell.appendChild(deleteButton);
+
+
+            row.appendChild(actionCell);
 
             tableBody.appendChild(row);
 
         }
 
     }
+
+}
+
+
+// Add a cell to a table row
+
+function addCell(row, value) {
+
+    let cell = document.createElement("td");
+
+    cell.innerText = value;
+
+    row.appendChild(cell);
 
 }
 
@@ -267,6 +388,9 @@ function editStudent(studentId) {
                 "block";
 
 
+            window.scrollTo(0, 0);
+
+
             break;
 
         }
@@ -302,11 +426,27 @@ function updateStudent(studentData) {
 
     .then(function(data) {
 
-        alert(data.message);
+        if (data.message === "Student updated successfully.") {
 
-        cancelEdit();
+            showMessage(data.message, "success");
 
-        loadStudents();
+            cancelEdit();
+
+            loadStudents();
+
+        }
+
+        else {
+
+            showMessage(data.message, "error");
+
+        }
+
+    })
+
+    .catch(function(error) {
+
+        showMessage("Something went wrong.", "error");
 
     });
 
@@ -317,8 +457,9 @@ function updateStudent(studentData) {
 
 function deleteStudent(studentId) {
 
-    let answer =
-        confirm("Are you sure you want to delete this student?");
+    let answer = confirm(
+        "Are you sure you want to delete this student?"
+    );
 
 
     if (answer === false) {
@@ -342,9 +483,15 @@ function deleteStudent(studentId) {
 
     .then(function(data) {
 
-        alert(data.message);
+        showMessage(data.message, "success");
 
         loadStudents();
+
+    })
+
+    .catch(function(error) {
+
+        showMessage("Could not delete student.", "error");
 
     });
 
@@ -382,9 +529,7 @@ function cancelEdit() {
 
 function updateDashboard() {
 
-    document.getElementById("totalStudents").innerText =
-        students.length;
-
+    let total = students.length;
 
     let eceCount = 0;
 
@@ -418,13 +563,14 @@ function updateDashboard() {
     }
 
 
+    document.getElementById("totalStudents").innerText =
+        total;
+
     document.getElementById("eceStudents").innerText =
         eceCount;
 
-
     document.getElementById("cseStudents").innerText =
         cseCount;
-
 
     document.getElementById("itStudents").innerText =
         itCount;

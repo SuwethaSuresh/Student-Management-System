@@ -42,7 +42,12 @@
     </div>
 
 
-    <!-- Add / Edit Student -->
+    <!-- Message -->
+
+    <div id="message"></div>
+
+
+    <!-- Student Form -->
 
     <div class="form-container">
 
@@ -52,26 +57,32 @@
 
             <label>Student ID:</label>
 
-            <input type="text"
-                   id="studentId"
-                   placeholder="Example: ST101"
-                   required>
+            <input
+                type="text"
+                id="studentId"
+                placeholder="Example: ST101"
+                required
+            >
 
 
             <label>Name:</label>
 
-            <input type="text"
-                   id="name"
-                   placeholder="Enter student name"
-                   required>
+            <input
+                type="text"
+                id="name"
+                placeholder="Enter student name"
+                required
+            >
 
 
             <label>Email:</label>
 
-            <input type="email"
-                   id="email"
-                   placeholder="Enter email"
-                   required>
+            <input
+                type="email"
+                id="email"
+                placeholder="Enter email"
+                required
+            >
 
 
             <label>Department:</label>
@@ -115,13 +126,13 @@
             </button>
 
 
-            <button type="button"
-                    id="cancelButton"
-                    class="cancel-button"
-                    onclick="cancelEdit()">
-
+            <button
+                type="button"
+                id="cancelButton"
+                class="cancel-button"
+                onclick="cancelEdit()"
+            >
                 Cancel
-
             </button>
 
         </form>
@@ -136,18 +147,20 @@
         <h2>Student List</h2>
 
 
-        <!-- Search -->
-
         <div class="search-container">
 
-            <input type="text"
-                   id="searchInput"
-                   placeholder="Search by name or student ID"
-                   onkeyup="displayStudents()">
+            <input
+                type="text"
+                id="searchInput"
+                placeholder="Search by name or Student ID"
+                onkeyup="displayStudents()"
+            >
 
 
-            <select id="filterDepartment"
-                    onchange="displayStudents()">
+            <select
+                id="filterDepartment"
+                onchange="displayStudents()"
+            >
 
                 <option value="">All Departments</option>
 
@@ -165,8 +178,6 @@
 
         </div>
 
-
-        <!-- Table -->
 
         <table>
 
